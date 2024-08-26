@@ -6,3 +6,7 @@
 - **Fastify**
 - **tsx**
 - **ESLint**
+- **Knex**
+
+## Database
+- **SQLITE3**
