@@ -5,3 +5,4 @@
 - **TypeScript**
 - **Fastify**
 - **tsx**
+- **ESLint**
