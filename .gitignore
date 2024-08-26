@@ -130,4 +130,4 @@ dist
 .pnp.*
 
 # database
-tmp/app.db
+db/app.db
