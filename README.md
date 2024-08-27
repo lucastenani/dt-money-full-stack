@@ -22,6 +22,8 @@
 - **zod**
 - **axios**
 - **REACT-QUERY**
+- **phosphor-icons**
+
 
 ## Migrations
  npm run knex -- migrate:make add-session-id-to-transactions
