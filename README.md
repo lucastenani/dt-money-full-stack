@@ -7,6 +7,8 @@
 - **tsx**
 - **ESLint**
 - **Knex**
+- **zod**
+- **dotenv**
 
 ## Database
 - **SQLITE3**
