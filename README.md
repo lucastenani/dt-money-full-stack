@@ -23,6 +23,7 @@
 - **axios**
 - **REACT-QUERY**
 - **phosphor-icons**
+- **react-hook-form**
 
 
 ## Migrations
