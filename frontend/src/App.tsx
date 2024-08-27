@@ -1,11 +1,13 @@
 import './globals.css'
 
-import { Button } from './components/ui/button'
+import { Header } from './components/header'
 
 export function App() {
   return (
-    <div className="flex h-screen items-center justify-center">
-      <Button>Hello, World!</Button>
+    <div className="bg-background min-h-screen w-screen font-sans">
+      <Header />
+
+      <main></main>
     </div>
   )
 }
