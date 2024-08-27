@@ -19,6 +19,9 @@
 - **prettier**
 - **tailwindcss**
 - **shadcn/ui**
+- **zod**
+- **axios**
+- **REACT-QUERY**
 
 ## Migrations
  npm run knex -- migrate:make add-session-id-to-transactions
