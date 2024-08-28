@@ -1,9 +1,12 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { ArrowCircleDown, ArrowCircleUp } from '@phosphor-icons/react'
 import * as RadioGroup from '@radix-ui/react-radio-group'
+import { useMutation } from '@tanstack/react-query'
 import { Controller, useForm } from 'react-hook-form'
+import { toast } from 'sonner'
 import { z } from 'zod'
 
+import { registerTransaction } from '@/api/register-transaction'
 import {
   DialogContent,
   DialogHeader,
@@ -32,9 +35,26 @@ export function NewTransactionModal() {
     resolver: zodResolver(newTransactionFormSchema),
   })
 
-  function handleCreateNewTransaction(data: NewTransactionFormInputs) {
-    console.log(data)
-    reset()
+  const { mutateAsync: registerTransactionFn } = useMutation({
+    mutationFn: registerTransaction,
+    onSuccess: () => {
+      toast.success('Transaction has been created.')
+    },
+    onError: () => {
+      toast.error('Some unexpected error occurred.')
+    },
+  })
+
+  async function handleCreateNewTransaction(data: NewTransactionFormInputs) {
+    try {
+      await registerTransactionFn({
+        title: data.title,
+        amount: data.price,
+        type: data.type,
+      })
+
+      reset()
+    } catch (error) {}
   }
 
   return (
@@ -44,7 +64,7 @@ export function NewTransactionModal() {
       </DialogHeader>
 
       <form
-        className="space-y-2"
+        className="space-y-2 md:space-y-4"
         onSubmit={handleSubmit(handleCreateNewTransaction)}
       >
         <Input type="text" placeholder="Title" {...register('title')} />
@@ -77,7 +97,7 @@ export function NewTransactionModal() {
               >
                 <RadioGroup.Item value="income" asChild>
                   <Button
-                    className="peer flex items-center justify-center gap-2 data-[state=checked]:bg-primary"
+                    className={`flex items-center justify-center gap-2 ${field.value === 'income' && 'bg-primary'}`}
                     variant={'ghost'}
                     type="button"
                   >
@@ -95,7 +115,7 @@ export function NewTransactionModal() {
 
                 <RadioGroup.Item value="outcome" asChild>
                   <Button
-                    className="peer flex items-center justify-center gap-2 data-[state=checked]:bg-destructive"
+                    className={`flex items-center justify-center gap-2 ${field.value === 'outcome' && 'bg-destructive'}`}
                     variant={'ghost'}
                     type="button"
                   >
