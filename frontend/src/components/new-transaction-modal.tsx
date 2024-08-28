@@ -18,7 +18,7 @@ import { Button } from './ui/button'
 
 const newTransactionFormSchema = z.object({
   title: z.string().min(4, 'Please enter more than 4 characters'),
-  price: z.number({ message: 'Enter a number' }),
+  price: z.number().min(0, 'Enter a valid number'),
   type: z.enum(['income', 'outcome']),
 })
 
@@ -67,7 +67,16 @@ export function NewTransactionModal() {
         className="space-y-2 md:space-y-4"
         onSubmit={handleSubmit(handleCreateNewTransaction)}
       >
-        <Input type="text" placeholder="Title" {...register('title')} />
+        <Input
+          className={
+            errors.title
+              ? 'border-destructive focus-visible:ring-destructive'
+              : ''
+          }
+          type="text"
+          placeholder="Title"
+          {...register('title')}
+        />
         {errors.title && (
           <span className="text-destructive md:text-sm">
             {errors.title.message}
@@ -75,6 +84,11 @@ export function NewTransactionModal() {
         )}
 
         <Input
+          className={
+            errors.price
+              ? 'border-destructive focus-visible:ring-destructive'
+              : ''
+          }
           type="text"
           placeholder="Price"
           {...register('price', { valueAsNumber: true })}
@@ -88,51 +102,51 @@ export function NewTransactionModal() {
         <Controller
           control={control}
           name="type"
-          render={({ field }) => {
-            return (
-              <RadioGroup.Root
-                className="grid grid-cols-2 gap-2 md:gap-3"
-                onValueChange={field.onChange}
-                value={field.value}
-              >
-                <RadioGroup.Item value="income" asChild>
-                  <Button
-                    className={`flex items-center justify-center gap-2 ${field.value === 'income' && 'bg-primary'}`}
-                    variant={'ghost'}
-                    type="button"
-                  >
-                    <ArrowCircleUp
-                      className={
-                        field.value === 'income'
-                          ? 'text-accent-foreground'
-                          : 'text-primary'
-                      }
-                      size={24}
-                    />
-                    Income
-                  </Button>
-                </RadioGroup.Item>
+          render={({ field }) => (
+            <RadioGroup.Root
+              className="grid grid-cols-2 gap-2 md:gap-3"
+              onValueChange={field.onChange}
+              value={field.value}
+            >
+              <RadioGroup.Item value="income" asChild>
+                <Button
+                  className={`flex items-center justify-center gap-2 ${errors.type && 'border border-destructive focus-visible:ring-destructive'} ${field.value === 'income' ? 'bg-primary' : ''}`}
+                  variant="ghost"
+                  type="button"
+                  disabled={isSubmitting}
+                >
+                  <ArrowCircleUp
+                    className={
+                      field.value === 'income'
+                        ? 'text-accent-foreground'
+                        : 'text-primary'
+                    }
+                    size={24}
+                  />
+                  Income
+                </Button>
+              </RadioGroup.Item>
 
-                <RadioGroup.Item value="outcome" asChild>
-                  <Button
-                    className={`flex items-center justify-center gap-2 ${field.value === 'outcome' && 'bg-destructive'}`}
-                    variant={'ghost'}
-                    type="button"
-                  >
-                    <ArrowCircleDown
-                      className={
-                        field.value === 'outcome'
-                          ? 'text-accent-foreground'
-                          : 'text-destructive'
-                      }
-                      size={24}
-                    />
-                    Outcome
-                  </Button>
-                </RadioGroup.Item>
-              </RadioGroup.Root>
-            )
-          }}
+              <RadioGroup.Item value="outcome" asChild>
+                <Button
+                  className={`flex items-center justify-center gap-2 ${errors.type && 'border border-destructive focus-visible:ring-destructive'} ${field.value === 'outcome' ? 'bg-destructive' : ''}`}
+                  variant="ghost"
+                  type="button"
+                  disabled={isSubmitting}
+                >
+                  <ArrowCircleDown
+                    className={
+                      field.value === 'outcome'
+                        ? 'text-accent-foreground'
+                        : 'text-destructive'
+                    }
+                    size={24}
+                  />
+                  Outcome
+                </Button>
+              </RadioGroup.Item>
+            </RadioGroup.Root>
+          )}
         />
         {errors.type && (
           <span className="text-destructive md:text-sm">
