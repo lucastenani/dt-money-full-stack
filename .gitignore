@@ -131,7 +131,8 @@ dist-ssr
 .pnp.*
 
 # database
-db/app.db
+*.db
+backend/db/*.db
 
 # Editor directories and files
 .vscode/*
