@@ -13,6 +13,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
+import { queryClient } from '@/lib/react-query'
 
 import { Button } from './ui/button'
 
@@ -38,6 +39,7 @@ export function NewTransactionModal() {
   const { mutateAsync: registerTransactionFn } = useMutation({
     mutationFn: registerTransaction,
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['transactions'] })
       toast.success('Transaction has been created.')
     },
     onError: () => {

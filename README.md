@@ -24,10 +24,11 @@
 - **REACT-QUERY**
 - **phosphor-icons**
 - **react-hook-form**
+- **date-fns**
 
 
 ## Migrations
- npm run knex -- migrate:make add-session-id-to-transactions
+ npm run knex -- migrate:make add-type-to-transactions
  npm run knex -- migrate:latest
 
 # Cases
@@ -35,11 +36,11 @@
 
 - [x] The user must be able to create a new transaction;
 - [ ] The user must be able to obtain a summary of his account;
-- [ ] The user must be able to list all transactions that have already occurred;
+- [x] The user must be able to list all transactions that have already occurred;
 - [ ] The user must be able to view a single transaction;
 
 ## business rules
 
-- [ ] The transaction can be of the credit type that will add to the total amount, or debit that will subtract;
+- [ ] The transaction can be of the income type that will add to the total amount, or outcome that will subtract;
 - [ ] It must be possible to identify the user between requests;
 - [ ] The user can only view transactions that he created;
