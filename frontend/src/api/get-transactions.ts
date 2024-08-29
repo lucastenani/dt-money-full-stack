@@ -1,7 +1,6 @@
 import { api } from '@/lib/axios'
 
 interface GetTransactionsResponse {
-  total: number
   transactions: {
     id: string
     title: string

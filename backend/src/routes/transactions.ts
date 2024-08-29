@@ -9,7 +9,18 @@ export async function transactionsRoutes(app: FastifyInstance) {
   app.get('/', async () => {
     const transactions = await knex('transactions').select()
 
-    return { total: transactions.length, transactions }
+    return { transactions }
+  })
+
+  app.get('/:id', async (request: FastifyRequest) => {
+    const getTransactionParamsSchema = z.object({
+      id: z.string().uuid(),
+    })
+
+    const { id } = getTransactionParamsSchema.parse(request.params)
+    const transaction = await knex('transactions').where('id', id).first()
+
+    return { transaction }
   })
 
   app.post('/', async (request: FastifyRequest, reply: FastifyReply) => {
@@ -27,7 +38,7 @@ export async function transactionsRoutes(app: FastifyInstance) {
       id: randomUUID(),
       title,
       amount: type === 'income' ? amount : amount * -1,
-      type
+      type,
     })
 
     return reply.status(201).send()
