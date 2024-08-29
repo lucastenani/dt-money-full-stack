@@ -43,4 +43,30 @@ export async function transactionsRoutes(app: FastifyInstance) {
 
     return reply.status(201).send()
   })
+
+  app.get('/summary', async () => {
+    // Função auxiliar para obter a soma dos valores com base no tipo
+    const getSumByType = async (type: 'income' | 'outcome' | null) => {
+      const query = knex('transactions').sum('amount', { as: 'total' })
+      if (type) {
+        query.where('type', type)
+      }
+      return query.first()
+    }
+
+    // Obtém o total, receitas e despesas
+    const [total, incomeData, outcomeData] = await Promise.all([
+      getSumByType(null),
+      getSumByType('income'),
+      getSumByType('outcome'),
+    ])
+
+    return {
+      summary: {
+        total: total?.total ?? 0,
+        incomes: incomeData?.total ?? 0,
+        outcomes: outcomeData?.total ?? 0,
+      },
+    }
+  })
 }

@@ -8,7 +8,7 @@ import { Button } from './ui/button'
 export function Header() {
   return (
     <header className="w-screen bg-muted-foreground py-12 dark:bg-background md:py-32">
-      <nav className="flex w-full items-center justify-between px-1 md:container md:w-2/3">
+      <nav className="flex w-full items-center justify-between px-1 md:container md:w-[90%] lg:w-2/3">
         <img
           className="w-full max-w-28 md:max-w-36"
           src={logoPath}

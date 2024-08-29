@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "lint": "eslint . --fix",
+    "lint": "eslint . ",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -21,6 +21,7 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "date-fns": "^3.6.0",
+    "embla-carousel-react": "^8.2.0",
     "lucide-react": "^0.436.0",
     "next-themes": "^0.3.0",
     "react": "^18.3.1",
