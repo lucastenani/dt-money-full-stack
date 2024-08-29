@@ -6,8 +6,32 @@ import { z } from 'zod'
 import { knex } from '../database'
 
 export async function transactionsRoutes(app: FastifyInstance) {
-  app.get('/', async () => {
-    const transactions = await knex('transactions').select()
+  app.get('/', async (request: FastifyRequest) => {
+    const getTransactionParamsSchema = z.object({
+      title: z.string().optional().nullable(),
+      amount: z.string().optional().nullable(),
+      created_at: z.string().optional().nullable(),
+    })
+
+    const { title, amount, created_at } = getTransactionParamsSchema.parse(
+      request.query,
+    )
+
+    const query = knex('transactions').select()
+
+    if (title) {
+      query.where('title', 'like', `%${title}%`)
+    }
+
+    if (amount) {
+      query.where('amount', amount)
+    }
+
+    if (created_at) {
+      query.where('created_at', created_at)
+    }
+
+    const transactions = await query
 
     return { transactions }
   })
@@ -45,7 +69,6 @@ export async function transactionsRoutes(app: FastifyInstance) {
   })
 
   app.get('/summary', async () => {
-    // Função auxiliar para obter a soma dos valores com base no tipo
     const getSumByType = async (type: 'income' | 'outcome' | null) => {
       const query = knex('transactions').sum('amount', { as: 'total' })
       if (type) {
@@ -54,7 +77,6 @@ export async function transactionsRoutes(app: FastifyInstance) {
       return query.first()
     }
 
-    // Obtém o total, receitas e despesas
     const [total, incomeData, outcomeData] = await Promise.all([
       getSumByType(null),
       getSumByType('income'),

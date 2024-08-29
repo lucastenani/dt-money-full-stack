@@ -19,7 +19,10 @@ import { Button } from './ui/button'
 
 const newTransactionFormSchema = z.object({
   title: z.string().min(4, 'Please enter more than 4 characters'),
-  price: z.number().min(0, 'Enter a valid number'),
+  price: z
+    .number()
+    .min(0, 'Enter a valid number')
+    .max(999999, 'Enter a lower value'),
   type: z.enum(['income', 'outcome']),
 })
 
@@ -40,6 +43,7 @@ export function NewTransactionModal() {
     mutationFn: registerTransaction,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['transactions'] })
+      queryClient.invalidateQueries({ queryKey: ['summary'] })
       toast.success('Transaction has been created.')
     },
     onError: () => {
