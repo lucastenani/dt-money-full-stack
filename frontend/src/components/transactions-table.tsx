@@ -2,6 +2,7 @@ import { MagnifyingGlass } from '@phosphor-icons/react'
 import { useQuery } from '@tanstack/react-query'
 import { formatDistanceToNow } from 'date-fns'
 import { enUS } from 'date-fns/locale'
+import { useSearchParams } from 'react-router-dom'
 
 import { getTransactions } from '@/api/get-transactions'
 import { Button } from '@/components/ui/button'
@@ -19,9 +20,22 @@ import { TransactionDetails } from './transaction-details'
 import { Dialog, DialogTrigger } from './ui/dialog'
 
 export function TransactionsTable() {
+  const [searchParams] = useSearchParams()
+
+  const title = searchParams.get('title')
+  const amount = searchParams.get('amount')
+  const createdAt = searchParams.get('created_at')
+  const type = searchParams.get('type')
+
   const { data: result } = useQuery({
-    queryKey: ['transactions'],
-    queryFn: getTransactions,
+    queryKey: ['transactions', title, amount, createdAt, type],
+    queryFn: () =>
+      getTransactions({
+        title,
+        amount,
+        createdAt,
+        type: type === 'all' ? null : type,
+      }),
   })
 
   return (

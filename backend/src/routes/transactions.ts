@@ -1,4 +1,5 @@
 import { randomUUID } from 'node:crypto'
+import { type } from 'node:os'
 
 import { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
@@ -10,10 +11,11 @@ export async function transactionsRoutes(app: FastifyInstance) {
     const getTransactionParamsSchema = z.object({
       title: z.string().optional().nullable(),
       amount: z.string().optional().nullable(),
-      created_at: z.string().optional().nullable(),
+      // date: z.string().optional().nullable(),
+      type: z.enum(['income', 'outcome']).optional().nullable(),
     })
 
-    const { title, amount, created_at } = getTransactionParamsSchema.parse(
+    const { title, amount, type } = getTransactionParamsSchema.parse(
       request.query,
     )
 
@@ -27,8 +29,12 @@ export async function transactionsRoutes(app: FastifyInstance) {
       query.where('amount', amount)
     }
 
-    if (created_at) {
-      query.where('created_at', created_at)
+    // if (date) {
+    //   query.whereRaw('DATE(created_at) = ?', [date])
+    // }
+
+    if (type) {
+      query.where('type', type).where('type', type)
     }
 
     const transactions = await query
