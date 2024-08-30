@@ -1,3 +1,4 @@
+import cookie from '@fastify/cookie'
 import cors from '@fastify/cors'
 import fastify from 'fastify'
 
@@ -9,7 +10,10 @@ const app = fastify()
 app.register(cors, {
   origin: env.CLIENT_ORIGIN,
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true,
 })
+
+app.register(cookie)
 
 app.register(transactionsRoutes, {
   prefix: 'transactions',

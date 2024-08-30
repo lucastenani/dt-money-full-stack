@@ -41,6 +41,6 @@
 
 ## business rules
 
-- [ ] The transaction can be of the income type that will add to the total amount, or outcome that will subtract;
-- [ ] It must be possible to identify the user between requests;
+- [x] The transaction can be of the income type that will add to the total amount, or outcome that will subtract;
+- [x] It must be possible to identify the user between requests - cookies
 - [ ] The user can only view transactions that he created;

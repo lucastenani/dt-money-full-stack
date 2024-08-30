@@ -1,16 +1,13 @@
-import type { Knex } from "knex";
-
+import type { Knex } from 'knex'
 
 export async function up(knex: Knex): Promise<void> {
   await knex.schema.alterTable('transactions', (table) => {
-    table.enum('type', ['income', 'outcome']).notNullable().defaultTo('income');
+    table.enum('type', ['income', 'outcome']).notNullable().defaultTo('income')
   })
 }
-
 
 export async function down(knex: Knex): Promise<void> {
   await knex.schema.alterTable('transactions', (table) => {
     table.dropColumn('type')
   })
 }
-

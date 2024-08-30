@@ -4,53 +4,69 @@ import { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
 
 import { knex } from '../database'
+import { checkSessionIdExists } from '../middlewares/check-session-id-exists'
 
 export async function transactionsRoutes(app: FastifyInstance) {
-  app.get('/', async (request: FastifyRequest) => {
-    const getTransactionParamsSchema = z.object({
-      title: z.string().optional().nullable(),
-      amount: z.string().optional().nullable(),
-      createdAt: z.string().optional().nullable(),
-      type: z.enum(['income', 'outcome']).optional().nullable(),
-    })
+  app.get(
+    '/',
+    { preHandler: [checkSessionIdExists] },
+    async (request: FastifyRequest) => {
+      const { sessionId } = request.cookies
+      const getTransactionParamsSchema = z.object({
+        title: z.string().optional().nullable(),
+        amount: z.string().optional().nullable(),
+        createdAt: z.string().optional().nullable(),
+        type: z.enum(['income', 'outcome']).optional().nullable(),
+      })
 
-    const { title, amount, type, createdAt } = getTransactionParamsSchema.parse(
-      request.query,
-    )
+      const { title, amount, type, createdAt } =
+        getTransactionParamsSchema.parse(request.query)
 
-    const query = knex('transactions').select()
+      const query = knex('transactions').where('session_id', sessionId).select()
 
-    if (title) {
-      query.where('title', 'like', `%${title}%`)
-    }
+      if (title) {
+        query.where('title', 'like', `%${title}%`)
+      }
 
-    if (amount) {
-      query.where('amount', amount)
-    }
+      if (amount) {
+        query.where('amount', amount)
+      }
 
-    if (createdAt) {
-      query.whereRaw('DATE(created_at) = ?', [createdAt]) // Aplicando o filtro de data
-    }
+      if (createdAt) {
+        query.whereRaw('DATE(created_at) = ?', [createdAt]) // Aplicando o filtro de data
+      }
 
-    if (type) {
-      query.where('type', type).where('type', type)
-    }
+      if (type) {
+        query.where('type', type).where('type', type)
+      }
 
-    const transactions = await query
+      const transactions = await query
 
-    return { transactions }
-  })
+      return { transactions }
+    },
+  )
 
-  app.get('/:id', async (request: FastifyRequest) => {
-    const getTransactionParamsSchema = z.object({
-      id: z.string().uuid(),
-    })
+  app.get(
+    '/:id',
+    { preHandler: [checkSessionIdExists] },
+    async (request: FastifyRequest) => {
+      const { sessionId } = request.cookies
 
-    const { id } = getTransactionParamsSchema.parse(request.params)
-    const transaction = await knex('transactions').where('id', id).first()
+      const getTransactionParamsSchema = z.object({
+        id: z.string().uuid(),
+      })
 
-    return { transaction }
-  })
+      const { id } = getTransactionParamsSchema.parse(request.params)
+      const transaction = await knex('transactions')
+        .where({
+          id,
+          session_id: sessionId,
+        })
+        .first()
+
+      return { transaction }
+    },
+  )
 
   app.post('/', async (request: FastifyRequest, reply: FastifyReply) => {
     const createTransactionBodySchema = z.object({
@@ -63,37 +79,59 @@ export async function transactionsRoutes(app: FastifyInstance) {
       request.body,
     )
 
+    let sessionId = request.cookies.sessionId
+
+    if (!sessionId) {
+      sessionId = randomUUID()
+
+      reply.cookie('sessionId', sessionId, {
+        path: '/',
+        maxAge: 60 * 60 * 24 * 7, // 7 days
+        httpOnly: true, // importante para segurança, evita acesso via JavaScript
+        // secure: process.env.NODE_ENV === 'production', // 'true' se estiver em produção com HTTPS
+      })
+    }
+
     await knex('transactions').insert({
       id: randomUUID(),
       title,
       amount: type === 'income' ? amount : amount * -1,
       type,
+      session_id: sessionId,
     })
 
     return reply.status(201).send()
   })
 
-  app.get('/summary', async () => {
-    const getSumByType = async (type: 'income' | 'outcome' | null) => {
-      const query = knex('transactions').sum('amount', { as: 'total' })
-      if (type) {
-        query.where('type', type)
+  app.get(
+    '/summary',
+    { preHandler: [checkSessionIdExists] },
+    async (request: FastifyRequest) => {
+      const { sessionId } = request.cookies
+
+      const getSumByType = async (type: 'income' | 'outcome' | null) => {
+        const query = knex('transactions')
+          .where('session_id', sessionId)
+          .sum('amount', { as: 'total' })
+        if (type) {
+          query.where('type', type)
+        }
+        return query.first()
       }
-      return query.first()
-    }
 
-    const [total, incomeData, outcomeData] = await Promise.all([
-      getSumByType(null),
-      getSumByType('income'),
-      getSumByType('outcome'),
-    ])
+      const [total, incomeData, outcomeData] = await Promise.all([
+        getSumByType(null),
+        getSumByType('income'),
+        getSumByType('outcome'),
+      ])
 
-    return {
-      summary: {
-        total: total?.total ?? 0,
-        incomes: incomeData?.total ?? 0,
-        outcomes: outcomeData?.total ?? 0,
-      },
-    }
-  })
+      return {
+        summary: {
+          total: total?.total ?? 0,
+          incomes: incomeData?.total ?? 0,
+          outcomes: outcomeData?.total ?? 0,
+        },
+      }
+    },
+  )
 }
