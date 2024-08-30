@@ -11,11 +11,11 @@ export async function transactionsRoutes(app: FastifyInstance) {
     const getTransactionParamsSchema = z.object({
       title: z.string().optional().nullable(),
       amount: z.string().optional().nullable(),
-      // date: z.string().optional().nullable(),
+      createdAt: z.string().optional().nullable(),
       type: z.enum(['income', 'outcome']).optional().nullable(),
     })
 
-    const { title, amount, type } = getTransactionParamsSchema.parse(
+    const { title, amount, type, createdAt } = getTransactionParamsSchema.parse(
       request.query,
     )
 
@@ -29,9 +29,9 @@ export async function transactionsRoutes(app: FastifyInstance) {
       query.where('amount', amount)
     }
 
-    // if (date) {
-    //   query.whereRaw('DATE(created_at) = ?', [date])
-    // }
+    if (createdAt) {
+      query.whereRaw('DATE(created_at) = ?', [createdAt]) // Aplicando o filtro de data
+    }
 
     if (type) {
       query.where('type', type).where('type', type)

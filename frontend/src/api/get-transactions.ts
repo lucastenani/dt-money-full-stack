@@ -28,7 +28,7 @@ export async function getTransactions({
     params: {
       title,
       amount,
-      date: createdAt,
+      createdAt,
       type,
     },
   })

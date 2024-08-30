@@ -113,9 +113,9 @@ export function TransactionFilters() {
       />
       <Input
         placeholder="Date"
-        className="h-8 md:max-w-32"
+        type="date"
+        className="h-8 md:max-w-40"
         {...register('createdAt')}
-        disabled
       />
       <Controller
         name="type"
