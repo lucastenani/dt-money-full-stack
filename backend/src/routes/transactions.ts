@@ -1,5 +1,4 @@
 import { randomUUID } from 'node:crypto'
-import { type } from 'node:os'
 
 import { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
