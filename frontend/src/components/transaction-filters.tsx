@@ -94,6 +94,7 @@ export function TransactionFilters() {
       type: 'all',
     })
   }
+
   return (
     <form
       className="mt-5 grid grid-cols-2 gap-1 md:flex md:flex-row md:items-center"
@@ -111,12 +112,14 @@ export function TransactionFilters() {
         type="number"
         {...register('amount')}
       />
+
       <Input
         placeholder="Date"
         type="date"
         className="h-8 md:max-w-40"
         {...register('createdAt')}
       />
+
       <Controller
         name="type"
         control={control}
