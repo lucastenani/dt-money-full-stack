@@ -9,6 +9,7 @@
 - **Knex**
 - **zod**
 - **dotenv**
+- **vitest**
 
 ## Database
 - **SQLITE3**
