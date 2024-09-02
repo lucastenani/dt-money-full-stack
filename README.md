@@ -10,6 +10,7 @@
 - **zod**
 - **dotenv**
 - **vitest**
+- **supertest**
 
 ## Database
 - **SQLITE3**
