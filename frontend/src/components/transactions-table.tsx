@@ -32,7 +32,7 @@ export function TransactionsTable() {
   const createdAt = searchParams.get('created_at')
   const type = searchParams.get('type')
 
-  const { data: result } = useQuery({
+  const { data: result, error } = useQuery({
     queryKey: ['transactions', title, amount, createdAt, type],
     queryFn: () =>
       getTransactions({
@@ -42,6 +42,8 @@ export function TransactionsTable() {
         type: type === 'all' ? null : type,
       }),
   })
+
+  if (error) toast.error('Some unexpected error occurred.')
 
   const { mutateAsync: excludeFromSummaryFn } = useMutation({
     mutationFn: excludeTransaction,
@@ -131,7 +133,7 @@ export function TransactionsTable() {
                   <Button
                     variant={'outline'}
                     size={'sm'}
-                    className="lg:flex lg:w-[150px] lg:items-center lg:justify-center lg:gap-1"
+                    className="lg:flex lg:w-[180px] lg:items-center lg:justify-center lg:gap-1"
                     onClick={() => handleExcludeFromSummary(transaction.id)}
                   >
                     {isInSummary ? (

@@ -1,3 +1,5 @@
+import { toast } from 'sonner'
+
 import { api } from '@/lib/axios'
 
 interface GetTransactionsParams {
@@ -24,15 +26,25 @@ export async function getTransactions({
   amount,
   createdAt,
   type,
-}: GetTransactionsParams) {
-  const response = await api.get<GetTransactionsResponse>('/transactions', {
-    params: {
-      title,
-      amount,
-      createdAt,
-      type,
-    },
-  })
+}: GetTransactionsParams): Promise<GetTransactionsResponse | null> {
+  try {
+    const response = await api.get<GetTransactionsResponse>('/transactions', {
+      params: {
+        title,
+        amount,
+        createdAt,
+        type,
+      },
+    })
 
-  return response.data
+    return response.data
+  } catch (error: any) {
+    if (error.response && error.response.status === 401) {
+      toast.info('Make your first transaction')
+      console.warn('No transactions found')
+      return { transactions: [] }
+    }
+
+    throw error
+  }
 }
