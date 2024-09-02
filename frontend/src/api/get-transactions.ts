@@ -15,6 +15,7 @@ interface GetTransactionsResponse {
     type: 'income' | 'outcome'
     created_at: string
     session_id: string
+    isExcludedFromBalance: 0 | 1
   }[]
 }
 

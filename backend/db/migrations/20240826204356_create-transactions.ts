@@ -9,6 +9,7 @@ export async function up(knex: Knex): Promise<void> {
       .timestamp('created_at')
       .defaultTo(new Date().toISOString())
       .notNullable()
+    table.boolean('isExcludedFromBalance').defaultTo(false).notNullable()
   })
 }
 

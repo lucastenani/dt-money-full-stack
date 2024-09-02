@@ -87,8 +87,8 @@ export async function transactionsRoutes(app: FastifyInstance) {
       reply.cookie('sessionId', sessionId, {
         path: '/',
         maxAge: 60 * 60 * 24 * 7, // 7 days
-        httpOnly: true, // importante para segurança, evita acesso via JavaScript
-        // secure: process.env.NODE_ENV === 'production', // 'true' se estiver em produção com HTTPS
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
       })
     }
 
@@ -103,6 +103,43 @@ export async function transactionsRoutes(app: FastifyInstance) {
     return reply.status(201).send()
   })
 
+  app.patch(
+    '/:id/exclude',
+    { preHandler: [checkSessionIdExists] },
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      const { sessionId } = request.cookies
+
+      const getTransactionParamsSchema = z.object({
+        id: z.string().uuid(),
+      })
+
+      const { id } = getTransactionParamsSchema.parse(request.params)
+
+      const currentTransaction = await knex('transactions')
+        .where({
+          id,
+          session_id: sessionId,
+        })
+        .first()
+
+      if (!currentTransaction) {
+        return reply.status(404).send()
+      }
+
+      await knex('transactions')
+        .where({
+          id,
+          session_id: sessionId,
+        })
+        .update({
+          isExcludedFromBalance:
+            currentTransaction.isExcludedFromBalance === 0 ? 1 : 0,
+        })
+
+      return reply.status(200).send()
+    },
+  )
+
   app.get(
     '/summary',
     { preHandler: [checkSessionIdExists] },
@@ -111,8 +148,9 @@ export async function transactionsRoutes(app: FastifyInstance) {
 
       const getSumByType = async (type: 'income' | 'outcome' | null) => {
         const query = knex('transactions')
-          .where('session_id', sessionId)
+          .where({ session_id: sessionId, isExcludedFromBalance: 0 })
           .sum('amount', { as: 'total' })
+
         if (type) {
           query.where('type', type)
         }

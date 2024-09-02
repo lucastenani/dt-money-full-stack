@@ -10,6 +10,7 @@ declare module 'knex/types/tables' {
       type: 'income' | 'outcome'
       created_at: string
       session_id: string
+      isExcludedFromBalance: 0 | 1
     }
   }
 }

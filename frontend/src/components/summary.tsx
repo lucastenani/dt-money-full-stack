@@ -38,10 +38,12 @@ export function Summary() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            {summary?.incomes.toLocaleString('en-US', {
-              style: 'currency',
-              currency: 'USD',
-            })}
+            {summary
+              ? summary.incomes.toLocaleString('en-US', {
+                  style: 'currency',
+                  currency: 'USD',
+                })
+              : '$0.00'}
           </CardContent>
         </Card>
 
@@ -53,10 +55,12 @@ export function Summary() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            {summary?.outcomes.toLocaleString('en-US', {
-              style: 'currency',
-              currency: 'USD',
-            })}
+            {summary
+              ? summary?.outcomes.toLocaleString('en-US', {
+                  style: 'currency',
+                  currency: 'USD',
+                })
+              : '$0.00'}
           </CardContent>
         </Card>
 
@@ -68,10 +72,12 @@ export function Summary() {
             </CardDescription>
           </CardHeader>
           <CardContent className="text-white">
-            {summary?.total.toLocaleString('en-US', {
-              style: 'currency',
-              currency: 'USD',
-            })}
+            {summary
+              ? summary?.total.toLocaleString('en-US', {
+                  style: 'currency',
+                  currency: 'USD',
+                })
+              : '$0.00'}
           </CardContent>
         </Card>
       </section>

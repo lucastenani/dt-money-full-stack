@@ -18,7 +18,10 @@ import { queryClient } from '@/lib/react-query'
 import { Button } from './ui/button'
 
 const newTransactionFormSchema = z.object({
-  title: z.string().min(4, 'Please enter more than 4 characters'),
+  title: z
+    .string()
+    .min(4, 'Please enter more than 4 characters')
+    .max(50, 'Enter a lower title'),
   price: z
     .number()
     .min(0, 'Enter a valid number')

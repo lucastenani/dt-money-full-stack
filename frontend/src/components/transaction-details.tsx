@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
+import { format } from 'date-fns'
 
 import { getTransactionDetails } from '@/api/get-transaction-details'
 import {
@@ -12,13 +13,17 @@ import { Table, TableBody, TableCell, TableRow } from './ui/table'
 
 interface TransactionDetailsProps {
   transactionId: string
+  open: boolean
 }
 
-export function TransactionDetails({ transactionId }: TransactionDetailsProps) {
+export function TransactionDetails({
+  transactionId,
+  open,
+}: TransactionDetailsProps) {
   const { data: transaction } = useQuery({
     queryKey: ['transaction', transactionId],
     queryFn: () => getTransactionDetails({ transactionId }),
-    // enabled: open,
+    enabled: open,
   })
 
   return (
@@ -54,9 +59,14 @@ export function TransactionDetails({ transactionId }: TransactionDetailsProps) {
                 </TableCell>
               </TableRow>
               <TableRow>
-                <TableCell className="text-muted-foreground">Date</TableCell>
+                <TableCell className="text-muted-foreground">
+                  Date created
+                </TableCell>
                 <TableCell className="flex justify-end capitalize">
-                  {transaction.created_at}
+                  {format(
+                    new Date(transaction.created_at),
+                    'MM/dd/yyyy hh:mm:ss a',
+                  )}
                 </TableCell>
               </TableRow>
             </TableBody>
