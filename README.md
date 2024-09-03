@@ -11,6 +11,7 @@
 - **dotenv**
 - **vitest**
 - **supertest**
+- **tsup**
 
 ## Database
 - **SQLITE3**
