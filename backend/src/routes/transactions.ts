@@ -33,7 +33,7 @@ export async function transactionsRoutes(app: FastifyInstance) {
       }
 
       if (createdAt) {
-        query.whereRaw('DATE(created_at) = ?', [createdAt]) // Aplicando o filtro de data
+        query.whereRaw('DATE(created_at) = ?', [createdAt])
       }
 
       if (type) {
