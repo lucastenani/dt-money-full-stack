@@ -1,6 +1,6 @@
 import { api } from '@/lib/axios'
 
-interface RegisterTransactionBody {
+export interface RegisterTransactionBody {
   title: string
   amount: number
   type: 'income' | 'outcome'

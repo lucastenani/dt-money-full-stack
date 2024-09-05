@@ -2,14 +2,14 @@ import { toast } from 'sonner'
 
 import { api } from '@/lib/axios'
 
-interface GetTransactionsParams {
+export interface GetTransactionsParams {
   title?: string | null
   amount?: string | null
   createdAt?: string | null
   type?: string | null
 }
 
-interface GetTransactionsResponse {
+export interface GetTransactionsResponse {
   transactions: {
     id: string
     title: string

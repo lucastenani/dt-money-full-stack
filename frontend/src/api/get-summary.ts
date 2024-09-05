@@ -1,6 +1,6 @@
 import { api } from '@/lib/axios'
 
-interface GetSummaryResponse {
+export interface GetSummaryResponse {
   summary: {
     total: number
     incomes: number
