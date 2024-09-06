@@ -28,6 +28,7 @@
 - **phosphor-icons**
 - **react-hook-form**
 - **date-fns**
+- **Playwright**
 
 
 ## Migrations
