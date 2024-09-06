@@ -8,7 +8,8 @@
     "dev:test": "vite --port 3000 --mode test",
     "build": "tsc -b && vite build",
     "lint": "eslint . ",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "playwright test"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
