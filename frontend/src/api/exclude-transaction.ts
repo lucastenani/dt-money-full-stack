@@ -1,11 +1,11 @@
 import { api } from '@/lib/axios'
 
-interface excludeTransactionProps {
+export interface ExcludeTransactionProps {
   transactionId: string
 }
 
 export async function excludeTransaction({
   transactionId,
-}: excludeTransactionProps) {
+}: ExcludeTransactionProps) {
   await api.patch(`/transactions/${transactionId}/exclude`)
 }

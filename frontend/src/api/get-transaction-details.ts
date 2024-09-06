@@ -1,10 +1,10 @@
 import { api } from '@/lib/axios'
 
-interface GetTransactionDetailsParams {
+export interface GetTransactionDetailsParams {
   transactionId: string
 }
 
-interface GetTransactionDetailsResponse {
+export interface GetTransactionDetailsResponse {
   transaction: {
     id: string
     title: string
@@ -12,6 +12,7 @@ interface GetTransactionDetailsResponse {
     type: 'income' | 'outcome'
     created_at: string
     session_id: string
+    isExcludedFromBalance: 0 | 1
   }
 }
 

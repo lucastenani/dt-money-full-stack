@@ -18,11 +18,15 @@ export const getSummaryMock = http.get<
     )
   }
 
+  const incomes = Math.floor(Math.random() * 10000)
+  const outcomes = Math.floor(Math.random() * 10000) * -1
+  const total = incomes + outcomes
+
   return HttpResponse.json({
     summary: {
-      total: -2999,
-      incomes: 15001,
-      outcomes: -18000,
+      total,
+      incomes,
+      outcomes,
     },
   })
 })
