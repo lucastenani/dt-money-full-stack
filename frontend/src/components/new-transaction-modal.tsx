@@ -21,11 +21,11 @@ const newTransactionFormSchema = z.object({
   title: z
     .string()
     .min(4, 'Please enter more than 4 characters')
-    .max(50, 'Enter a lower title'),
+    .max(50, 'Please enter a lower title'),
   price: z
-    .number()
-    .min(0, 'Enter a valid number')
-    .max(999999, 'Enter a lower value'),
+    .number({ message: 'Please enter a number' })
+    .min(0, 'Please enter a bigger number')
+    .max(999999, 'Please enter a lower number'),
   type: z.enum(['income', 'outcome']),
 })
 
