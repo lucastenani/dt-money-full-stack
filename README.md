@@ -11,6 +11,22 @@ End-to-end (E2E) tests have been implemented for both the frontend and backend a
 - **Backend**: E2E tests ensure that the REST API behaves as expected under various scenarios.
 - **Frontend**: E2E tests validate the user interface and interactions with the backend API.
 
+## Getting Started
+
+To run the application locally, follow these steps:
+
+### Prerequisites
+
+- **Docker**: Ensure you have Docker installed on your machine. You can download Docker from [Docker's official website](https://www.docker.com/products/docker-desktop).
+
+### Steps
+1. In the root directory of the application build and start the application using Docker Compose:
+```bash
+docker-compose up --build
+```
+2. Once the application is up and running, open your browser and navigate to [localhost](http://localhost:4173/) to see the application in action.compose up --build
+
+
 ## Backend Libraries
 
 - **TypeScript**: For type-safe JavaScript development.
