@@ -5,6 +5,7 @@
 The `api-rest-fastify` project is a full-stack application featuring a REST API built with Node.js and Fastify, alongside a frontend for consuming the API. This application allows users to view bank transfers, create transactions, see an overview of their account, view details of specific transactions, and apply filters. The project utilizes a variety of tools and libraries, including Fastify, Knex, TypeScript, React, Tailwind, React Query, and others to facilitate development.
 
 ## Testing
+
 End-to-end (E2E) tests have been implemented for both the frontend and backend applications:
 
 - **Backend**: E2E tests ensure that the REST API behaves as expected under various scenarios.
@@ -41,6 +42,36 @@ End-to-end (E2E) tests have been implemented for both the frontend and backend a
 - **react-hook-form**: For handling form state and validation.
 - **date-fns**: For date manipulation and formatting.
 - **Playwright**: For end-to-end testing of the frontend.
+
+## Folder Structure
+
+### Backend
+
+- **db/**: Contains physical database files and migrations.
+- **src/**: Contains application source code.
+  - **@types/**: TypeScript type definitions.
+  - **env/**: TypeScript type definitions for environment variables.
+  - **middlewares/**: Middleware functions for request processing.
+  - **routes/**: API route handlers.
+  - **app.ts**: Main application setup.
+  - **database.ts**: Database connection and configuration.
+  - **server.ts**: Entry point for the Fastify server.
+- **test/**: End-to-end tests for the backend.
+
+### Frontend
+
+- **src/**: Contains application source code.
+  - **api/**: Contains API calls and mocks.
+  - **assets/**: Images and other static resources.
+  - **components/**: Reusable React components.
+  - **lib/**: Utilities including axios, react-query, and others.
+  - **pages/**: Application pages.
+  - **app.tsx**: Main application component.
+  - **env.ts**: TypeScript type definitions for environment variables.
+  - **globals.css**: Global styles.
+  - **main.tsx**: Entry point for the React application.
+  - **routes.tsx**: Application routing configuration.
+- **test/**: End-to-end tests for the frontend.
 
 ## Functional Requirements
 
