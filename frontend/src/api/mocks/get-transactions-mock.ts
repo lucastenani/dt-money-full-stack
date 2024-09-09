@@ -35,6 +35,26 @@ const transactions: GetTransactionsResponse = {
   }),
 }
 
+transactions.transactions.push({
+  id: 'fixed-1',
+  title: 'fixed income transaction',
+  amount: 500,
+  created_at: '2024-09-01T12:00:00.000Z',
+  isExcludedFromBalance: 0,
+  session_id: 'c563c32c-539f-486a-9be9-3755394640a3',
+  type: 'income',
+})
+
+transactions.transactions.push({
+  id: 'fixed-2',
+  title: 'fixed outcome transaction',
+  amount: -300,
+  created_at: '2024-08-15T12:00:00.000Z',
+  isExcludedFromBalance: 0,
+  session_id: 'c563c32c-539f-486a-9be9-3755394640a3',
+  type: 'outcome',
+})
+
 export const getTransactionsMock = http.get<
   never,
   GetTransactionsParams,
