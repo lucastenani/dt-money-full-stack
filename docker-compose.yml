@@ -4,6 +4,7 @@ services:
   backend:
     build:
       context: ./backend
+      dockerfile: Dockerfile
     ports:
       - "3333:3333"
     environment:
@@ -11,22 +12,18 @@ services:
       - NODE_ENV=production  
       - DATABASE_CLIENT=sqlite
       - CLIENT_ORIGIN=http://localhost:4173
-    volumes:
-      - ./backend:/usr/src/app
-    entrypoint: ["sh", "-c", "npm run knex -- migrate:latest && npm run build && node dist/server.js"]  
     networks:
       - app-network
 
   frontend:
     build:
       context: ./frontend
+      dockerfile: Dockerfile
     ports:
-      - "4173:4173"  
+      - "4173:80"
     environment:
       - VITE_API_URL=http://localhost:3333 
       - MODE=production  
-    volumes:
-      - ./frontend:/src
     networks:
       - app-network
 
