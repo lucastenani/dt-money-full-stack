@@ -20,12 +20,14 @@ To run the application locally, follow these steps:
 - **Docker**: Ensure you have Docker installed on your machine. You can download Docker from [Docker's official website](https://www.docker.com/products/docker-desktop).
 
 ### Steps
+
 1. In the root directory of the application build and start the application using Docker Compose:
+
 ```bash
 docker-compose up --build
 ```
-2. Once the application is up and running, open your browser and navigate to [localhost](http://localhost:4173/) to see the application in action.compose up --build
 
+2. Once the application is up and running, open your browser and navigate to [localhost](http://localhost:4173/) to see the application in action.compose up --build
 
 ## Backend Libraries
 
