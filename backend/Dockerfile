@@ -1,22 +1,15 @@
-# Stage 1: Build
+# Base image
 FROM node:18 AS build
 
 WORKDIR /usr/src/app
 
 COPY package*.json ./
 RUN npm install
+
 COPY . .
-RUN npm run build
-
-# Stage 2: Production
-FROM node:18-alpine
-
-WORKDIR /usr/src/app
-
-COPY --from=build /usr/src/app/dist ./dist
-COPY --from=build /usr/src/app/node_modules ./node_modules
-COPY --from=build /usr/src/app/package*.json ./
 
 EXPOSE 3333
 
+RUN npm run knex migrate:latest 
+RUN npm run build
 CMD ["node", "dist/server.js"]
